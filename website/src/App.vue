@@ -1,18 +1,18 @@
 <template>
   <div id="app">
-    <PlanetChart/>
+    <PlanetChart />
   </div>
 </template>
 
 <script>
-import PlanetChart from './components/PlanetChart.vue'
+import PlanetChart from "./components/PlanetChart.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    PlanetChart
-  }
-}
+    PlanetChart,
+  },
+};
 </script>
 <style>
 #app {
