@@ -10,11 +10,11 @@ export class Api {
       const m: apiMeasurement[] = [];
       measurements.forEach((meas) => {
         const newMeas: apiMeasurement = {
-          temperature: meas.Temperature,
-          humidity: meas.Humidity,
-          pressure: meas.Pressure,
-          battery: meas.Battery,
-          time: meas.Time,
+          temperature: parseFloat(meas.Temperature),
+          humidity: parseFloat(meas.Humidity),
+          pressure: parseFloat(meas.Pressure),
+          battery: parseFloat(meas.Battery),
+          time: parseInt(meas.Time),
         };
         m.push(newMeas);
       });
@@ -28,9 +28,9 @@ export class Api {
 }
 
 export interface apiMeasurement {
-  temperature: string;
-  humidity: string;
-  pressure: string;
-  battery: string;
-  time: string;
+  temperature: number;
+  humidity: number;
+  pressure: number;
+  battery: number;
+  time: number;
 }
