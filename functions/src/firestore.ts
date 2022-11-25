@@ -16,6 +16,7 @@ if (fs.existsSync(CUSTOM_SERVICE_ACCOUNT)) {
 
 const db = admin.firestore();
 const weatherCol = db.collection("weather_stations");
+const weather24hCol = db.collection("weather_stations_24h");
 
 export class Firestore {
   static async getLast24Hours(): Promise<Measurement[]> {
@@ -38,6 +39,22 @@ export class Firestore {
       res.push(entry.data() as Measurement);
     });
     return res;
+  }
+
+  static async getLast24HoursStatic(): Promise<Measurement[]> {
+    const last24h = await weather24hCol.get();
+    const res: Measurement[] = [];
+    last24h.forEach((entry) => {
+      res.push(entry.data() as Measurement);
+    });
+    return res;
+  }
+
+  static async create24Collection(ms: Measurement[]): Promise<void> {
+    ms.forEach((entry) => {
+      const doc = weather24hCol.doc(entry.Time);
+      doc.create(entry);
+    });
   }
 }
 

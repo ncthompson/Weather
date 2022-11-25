@@ -1,16 +1,16 @@
 <template>
   <div id="app">
-    <PlanetChart />
+    <WeatherChart />
   </div>
 </template>
 
 <script>
-import PlanetChart from "./components/PlanetChart.vue";
+import WeatherChart from "./components/WeatherChart.vue";
 
 export default {
   name: "App",
   components: {
-    PlanetChart,
+    WeatherChart,
   },
 };
 </script>
