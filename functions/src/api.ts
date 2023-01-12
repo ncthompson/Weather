@@ -74,7 +74,7 @@ export class Api {
   }
 
   roundAvg(val: number, div: number): number {
-    return Math.round((val / div) * 100) / 100;
+    return Number((val / div).toFixed(2));
   }
 }
 
