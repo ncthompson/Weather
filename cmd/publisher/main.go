@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"flag"
 	"fmt"
 	"log"
 	"os"
@@ -17,9 +18,13 @@ import (
 const subTopic = "homemqtt/station/villarosa/"
 
 func main() {
+	mqttHostname := flag.String("hostname", "192.168.21.21", "MQTT server hostname")
+	mqttPort := flag.String("port", "1883", "MQTT server port")
+	firebaseCredsFile := flag.String("creds", "/data/firebase.json", "Firebase JSON creds file")
 	mqtt.CRITICAL = log.New(os.Stdout, "", 0)
 	mqtt.ERROR = log.New(os.Stdout, "", 0)
-	opts := mqtt.NewClientOptions().AddBroker("tcp://192.168.21.21:1883").SetClientID("emqx_test_client")
+	serverURI := fmt.Sprintf("tcp://%s:%s", *mqttHostname, *mqttPort)
+	opts := mqtt.NewClientOptions().AddBroker(serverURI).SetClientID("emqx_test_client")
 
 	opts.SetKeepAlive(60 * time.Second)
 	opts.SetDefaultPublishHandler(f)
@@ -30,7 +35,7 @@ func main() {
 		panic(token.Error())
 	}
 
-	app, err := firebaseLogin()
+	app, err := firebaseLogin(*firebaseCredsFile)
 	if err != nil {
 		panic(err)
 	}
@@ -50,8 +55,8 @@ func main() {
 	select {}
 }
 
-func firebaseLogin() (*firebase.App, error) {
-	opt := option.WithCredentialsFile("/data/bietsbot-firebase.json")
+func firebaseLogin(credsFile string) (*firebase.App, error) {
+	opt := option.WithCredentialsFile(credsFile)
 	app, err := firebase.NewApp(context.Background(), nil, opt)
 	if err != nil {
 		return nil, fmt.Errorf("error initializing app: %v", err)
